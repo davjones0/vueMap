@@ -1,6 +1,9 @@
 # vuemap
 
-> An electron-vue mapping project showing both 2d and 3d visualizations
+> An electron-vue mapping project showing both 2d and 3d visualizations.
+> Using d3 to create maps, three.js for extruding the map geometries, d3-threeD.js to convert svg paths to three.js paths, state geometries provided by 
+> U.S. census shape files converted to geojsons using mapshaper.com with 2016 average wage and labor hours data baked into the geojson using qgis.
+> Also using geojson-polyline to dramatically reduce the geojson to 1/3 of it's original size by utilizing google's encoded polyline algorithm  
 
 #### Build Setup
 

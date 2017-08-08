@@ -1,5 +1,6 @@
 <template>
   <div>
+    <svg id='mako'></svg>
     <div class="title">Information</div>
     <div class="items">
       <div class="item">
@@ -31,7 +32,18 @@
 </template>
 
 <script>
+  // import * as d3 from 'd3'
+
   export default {
+    methods: {
+      test () {
+        this.name = 'good news'
+        this.node = 'it works'
+      }
+    },
+    created () {
+      this.test()
+    },
     data () {
       return {
         electron: process.versions['atom-shell'],
