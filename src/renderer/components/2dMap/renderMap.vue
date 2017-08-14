@@ -32,17 +32,37 @@
 </template>
 
 <script>
-  // import * as d3 from 'd3'
+  import * as d3 from 'd3'
 
   export default {
     methods: {
-      test () {
-        this.name = 'good news'
-        this.node = 'it works'
+
+      mapitUp () {
+        let width = 960
+        var height = 500
+
+        let svg = d3.selectAll('#mako')
+
+        let projection = d3.geoAlbers()
+          .scale(200)
+          .translate([width / 2, height / 2])
+
+        let path = d3.geoPath()
+          .projection(projection)
+
+        let url = 'http://enjalot.github.io/wwsd/data/world/world-110m.geojson'
+        // d3.json(postData, function (err, geojson) {
+        d3.json(url, function (err, geojson) {
+          if (err) {
+            console.log(err)
+          }
+          svg.append('path')
+            .attr('d', path(geojson))
+        })
       }
     },
-    created () {
-      this.test()
+    mounted () {
+      this.mapitUp()
     },
     data () {
       return {
@@ -58,6 +78,11 @@
 </script>
 
 <style scoped>
+  svg {
+    width: 960px;
+    height: 500px;
+  }
+
   .title {
     color: #888;
     font-size: 18px;
