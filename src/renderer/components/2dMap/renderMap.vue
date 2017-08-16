@@ -43,21 +43,32 @@
 
         let svg = d3.selectAll('#mako')
 
+        let mapG = svg.append('g')
+
+        // dist layer
+        let showLayer = mapG.append('g')
+        // water dissolve prolly not needed
+
         let projection = d3.geoAlbers()
-          .scale(200)
+          .scale(800)
           .translate([width / 2, height / 2])
 
         let path = d3.geoPath()
           .projection(projection)
 
-        let url = 'http://enjalot.github.io/wwsd/data/world/world-110m.geojson'
+        // im chheky using the raw source of this file in the repo
+        // so I dont have to build an api ;3
+        let url = 'https://raw.githubusercontent.com/davjones0/vueMap/master/src/renderer/data/mapgeo.json'
         // d3.json(postData, function (err, geojson) {
         d3.json(url, function (err, geojson) {
           if (err) {
             console.log(err)
           }
-          svg.append('path')
-            .attr('d', path(geojson))
+          showLayer.selectAll('path')
+            .data(geojson.features)
+            .enter().append('path')
+            .attr('stroke', 'white')
+            .attr('d', path)
         })
       }
     },
