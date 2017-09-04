@@ -4,6 +4,9 @@
     <div class="title">Information</div>
     <div class="items">
       <div class="item">
+        <div>Weekly Hours {{AWeeklyHours}}</div>
+        <div>Hourly Earnings {{AHourlyEarnings}}</div>
+        <div>Weekly Earnings {{AWeeklyEarnings}}</div>
         <div class="name">Path:</div>
         <div class="value">{{ path }}</div>
       </div>
@@ -37,11 +40,14 @@
     methods: {
 
       mapitUp () {
-        // const decode = require('geojson-polyline').decode
+        const decode = require('geojson-polyline').decode
         let width = 960
-        var height = 500
+        let height = 500
 
         let svg = d3.selectAll('#mako')
+          .call(d3.zoom().on('zoom', function () {
+            mapG.attr('transform', d3.event.transform)
+          }))
 
         let mapG = svg.append('g')
 
@@ -56,24 +62,26 @@
         let path = d3.geoPath()
           .projection(projection)
 
+        let _this = this
+        // this.yPos = 100
         // I'm cheeky using the raw source of this file in the repo
         // so I dont have to build an api ;3
-        let url = 'https://raw.githubusercontent.com/davjones0/vueMap/master/src/renderer/data/endcodedMapgeo.json'
+        let url = 'https://raw.githubusercontent.com/davjones0/vueMap/master/src/renderer/data/encodedMapgeo.json'
         // d3.json(postData, function (err, geojson) {
         d3.json(url, function (err, geojson) {
-          alert(geojson)
-          // var decodeUrl = decode(geojson.features)
-          // alert(decodeUrl)
+          var decodeUrl = decode(geojson)
           if (err) {
             console.log(err)
           }
           showLayer.selectAll('path')
-            .data(geojson.features)
+            .data(decodeUrl.features)
             .enter().append('path')
             .attr('stroke', 'white')
             .attr('d', path)
             .on('mouseover', (d) => {
-              alert(d.properties.annavg41_field_4)
+              _this.AWeeklyHours = d.properties.annavg41_field_4
+              _this.AHourlyEarnings = d.properties.annavg41_field_7
+              _this.AWeeklyEarnings = d.properties.annavg41_field_10
             })
         })
       }
@@ -88,7 +96,12 @@
         node: process.versions.node,
         path: '/',
         platform: require('os').platform(),
-        vue: require('vue/package.json').version
+        vue: require('vue/package.json').version,
+        AWeeklyHours: 0,
+        AHourlyEarnings: 0,
+        AWeeklyEarnings: 0,
+        xPos: 0,
+        yPos: 0
       }
     }
   }
