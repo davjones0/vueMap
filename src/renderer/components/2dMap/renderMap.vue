@@ -33,11 +33,11 @@
 
 <script>
   import * as d3 from 'd3'
-
   export default {
     methods: {
 
       mapitUp () {
+        // const decode = require('geojson-polyline').decode
         let width = 960
         var height = 500
 
@@ -56,11 +56,14 @@
         let path = d3.geoPath()
           .projection(projection)
 
-        // im chheky using the raw source of this file in the repo
+        // I'm cheeky using the raw source of this file in the repo
         // so I dont have to build an api ;3
-        let url = 'https://raw.githubusercontent.com/davjones0/vueMap/master/src/renderer/data/mapgeo.json'
+        let url = 'https://raw.githubusercontent.com/davjones0/vueMap/master/src/renderer/data/endcodedMapgeo.json'
         // d3.json(postData, function (err, geojson) {
         d3.json(url, function (err, geojson) {
+          alert(geojson)
+          // var decodeUrl = decode(geojson.features)
+          // alert(decodeUrl)
           if (err) {
             console.log(err)
           }
@@ -69,6 +72,9 @@
             .enter().append('path')
             .attr('stroke', 'white')
             .attr('d', path)
+            .on('mouseover', (d) => {
+              alert(d.properties.annavg41_field_4)
+            })
         })
       }
     },
